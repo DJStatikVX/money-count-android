@@ -2,10 +2,12 @@ package xyz.djstatikvx.moneycount.ui.screens.main
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import xyz.djstatikvx.moneycount.domain.usecase.GetSelectedCountOptionsUseCase
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -17,16 +19,19 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    fun getSelectedCountOptions() {
-        val selectedCountOptions = getSelectedCountOptionsUseCase()
+    suspend fun getSelectedCountOptions() {
+        val selectedCountOptions = withContext(Dispatchers.IO) { getSelectedCountOptionsUseCase() }
         _uiState.update { it.copy(countOptions = selectedCountOptions) }
     }
 
-    fun clearTotalSum() {
-        _uiState.update {
-            it.copy(
-                totalSum = BigDecimal.ZERO
-            )
+    fun calculateTotalSum() {
+        val totalSum = uiState.value.countOptions.fold(BigDecimal.ZERO) { acc, countOption ->
+            acc.add(countOption.multiplier.value.multiply(BigDecimal(countOption.amount)))
         }
+        _uiState.update { it.copy(totalSum = totalSum) }
+    }
+
+    fun clearTotalSum() {
+        _uiState.update { it.copy(totalSum = BigDecimal.ZERO) }
     }
 }
