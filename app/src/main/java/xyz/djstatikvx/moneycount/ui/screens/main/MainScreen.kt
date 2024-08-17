@@ -1,5 +1,6 @@
 package xyz.djstatikvx.moneycount.ui.screens.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,14 +30,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import xyz.djstatikvx.moneycount.R
+import xyz.djstatikvx.moneycount.domain.model.CountOption
 import xyz.djstatikvx.moneycount.extensions.toMoneyFormat
 import xyz.djstatikvx.moneycount.ui.components.AppCard
+import xyz.djstatikvx.moneycount.ui.components.AppText
 import xyz.djstatikvx.moneycount.ui.components.AppTextField
+import xyz.djstatikvx.moneycount.ui.screens.main.MainScreen.Companion.MAIN_CARDS_SEPARATOR_VALUE
 import xyz.djstatikvx.moneycount.ui.screens.settings.SettingsScreen
 import xyz.djstatikvx.moneycount.ui.theme.Pink
 import java.math.BigDecimal
 
 class MainScreen : Screen {
+
+    companion object {
+        // Amount to separate the fields between first and second cards
+        const val MAIN_CARDS_SEPARATOR_VALUE = 1
+    }
 
     @Composable
     override fun Content() {
@@ -84,18 +93,28 @@ private fun MainScreenContent(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val totalSum = uiState.countOptions.fold(BigDecimal.ZERO) { acc, countOption ->
+        acc.add(countOption.multiplier.value.multiply(BigDecimal(countOption.amount)))
+    }
+
     LaunchedEffect(Unit) {
         viewModel.getSelectedCountOptions()
     }
 
     Column(
-        modifier.padding(dimensionResource(id = R.dimen.card_padding))
+        modifier = modifier.padding(dimensionResource(id = R.dimen.card_padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
     ) {
         MainScreenTotalSumContainer(
-            totalSum = uiState.totalSum,
+            totalSum = totalSum,
             onClear = { viewModel.clearTotalSum() }
         )
-        MainScreenCalculatorContainer()
+        MainScreenCalculatorContainer(
+            countOptions = uiState.countOptions,
+            onAmountInputChange = { item, amount ->
+                viewModel.updateCountOptionAmount(item.multiplier, amount)
+            }
+        )
     }
 }
 
@@ -112,9 +131,10 @@ private fun MainScreenTotalSumContainer(
             AppTextField(
                 value = totalSum.toMoneyFormat(),
                 onValueChange = {},
-                readOnly = true,
                 modifier = Modifier
-                    .weight(.9f)
+                    .weight(.9f),
+                readOnly = true,
+                textColor = Pink
             )
             IconButton(onClick = { onClear() }) {
                 Icon(
@@ -127,8 +147,79 @@ private fun MainScreenTotalSumContainer(
 }
 
 @Composable
-private fun MainScreenCalculatorContainer() {
-    LazyColumn {
+private fun MainScreenCalculatorContainer(
+    countOptions: List<CountOption>,
+    onAmountInputChange: (CountOption, Int) -> Unit
+) {
+    val firstCardCountOptions =
+        countOptions.filter { it.multiplier.value.toInt() >= MAIN_CARDS_SEPARATOR_VALUE }
+    val secondCardCountOptions =
+        countOptions.filter { it.multiplier.value.toInt() < MAIN_CARDS_SEPARATOR_VALUE }
 
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
+    ) {
+        item {
+            AppCard {
+                firstCardCountOptions.map {
+                    MainScreenCalculatorItemRow(
+                        countOption = it,
+                        onValueChange = { amount -> onAmountInputChange(it, amount) }
+                    )
+                }
+            }
+        }
+
+        item {
+            AppCard {
+                secondCardCountOptions.map {
+                    MainScreenCalculatorItemRow(
+                        countOption = it,
+                        onValueChange = { amount -> onAmountInputChange(it, amount) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MainScreenCalculatorItemRow(
+    countOption: CountOption,
+    onValueChange: (Int) -> Unit
+) {
+    val totalSum = countOption.multiplier.value
+        .multiply(BigDecimal(countOption.amount))
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val multiplierSymbol = "x"
+        val equalsSymbol = "="
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(.4f)
+        ) {
+            AppText(text = countOption.multiplier.value.toMoneyFormat())
+            AppText(text = multiplierSymbol)
+            AppTextField(
+                value = countOption.amount.toString(),
+                onValueChange = {
+                    if (it.isNotEmpty()) {
+                        onValueChange(it.toInt())
+                    }
+                }
+            )
+        }
+        AppText(text = equalsSymbol)
+        AppTextField(
+            value = totalSum.toMoneyFormat(),
+            onValueChange = {},
+            readOnly = true,
+            modifier = Modifier.weight(.4f)
+        )
     }
 }

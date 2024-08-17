@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import xyz.djstatikvx.moneycount.domain.model.CountOptionValue
 import xyz.djstatikvx.moneycount.domain.usecase.GetSelectedCountOptionsUseCase
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -24,14 +25,18 @@ class MainViewModel @Inject constructor(
         _uiState.update { it.copy(countOptions = selectedCountOptions) }
     }
 
-    fun calculateTotalSum() {
-        val totalSum = uiState.value.countOptions.fold(BigDecimal.ZERO) { acc, countOption ->
-            acc.add(countOption.multiplier.value.multiply(BigDecimal(countOption.amount)))
+    fun updateCountOptionAmount(value: CountOptionValue, newAmount: Int) {
+        val newCountOptions = uiState.value.countOptions.map {
+            val updatedItem = it.copy(amount = newAmount)
+            if (it.multiplier == value) updatedItem else it
         }
-        _uiState.update { it.copy(totalSum = totalSum) }
+        _uiState.update { it.copy(countOptions = newCountOptions) }
     }
 
     fun clearTotalSum() {
-        _uiState.update { it.copy(totalSum = BigDecimal.ZERO) }
+        val newCountOptions = uiState.value.countOptions.map {
+            it.copy(amount = 0)
+        }
+        _uiState.update { it.copy(countOptions = newCountOptions) }
     }
 }
