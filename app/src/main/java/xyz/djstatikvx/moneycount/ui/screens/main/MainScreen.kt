@@ -13,7 +13,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -25,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -65,9 +64,10 @@ private fun MainScreenToolbar() {
 
     TopAppBar(
         title = {
-            Text(
+            AppText(
                 text = stringResource(R.string.app_name),
-                fontWeight = FontWeight.SemiBold
+                textColor = Color.White,
+                fontSize = dimensionResource(id = R.dimen.title_size).value.sp
             )
         },
         actions = {
@@ -157,7 +157,7 @@ private fun MainScreenCalculatorContainer(
         countOptions.filter { it.multiplier.value.toInt() < MAIN_CARDS_SEPARATOR_VALUE }
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards)),
     ) {
         item {
             AppCard {
@@ -194,32 +194,39 @@ private fun MainScreenCalculatorItemRow(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(id = R.dimen.card_padding))
     ) {
         val multiplierSymbol = "x"
         val equalsSymbol = "="
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(.4f)
-        ) {
-            AppText(text = countOption.multiplier.value.toMoneyFormat())
-            AppText(text = multiplierSymbol)
-            AppTextField(
-                value = countOption.amount.toString(),
-                onValueChange = {
-                    if (it.isNotEmpty()) {
-                        onValueChange(it.toInt())
-                    }
+
+        AppText(
+            text = countOption.multiplier.value.toMoneyFormat(),
+            modifier = Modifier.weight(.25f),
+        )
+        AppText(
+            text = multiplierSymbol,
+            modifier = Modifier.weight(.1f)
+        )
+        AppTextField(
+            value = countOption.amount.toString(),
+            modifier = Modifier.weight(.3f),
+            onValueChange = {
+                if (it.isNotEmpty()) {
+                    onValueChange(it.toInt())
                 }
-            )
-        }
-        AppText(text = equalsSymbol)
+            }
+        )
+        AppText(
+            text = equalsSymbol,
+            modifier = Modifier.weight(.1f)
+        )
         AppTextField(
             value = totalSum.toMoneyFormat(),
             onValueChange = {},
             readOnly = true,
-            modifier = Modifier.weight(.4f)
+            modifier = Modifier.weight(.6f)
         )
     }
 }
