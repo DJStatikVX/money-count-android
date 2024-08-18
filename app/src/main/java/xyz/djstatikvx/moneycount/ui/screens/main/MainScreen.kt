@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Settings
@@ -168,27 +169,25 @@ private fun MainScreenCalculatorContainer(
     val secondCardCountOptions =
         countOptions.filter { it.multiplier.value.toInt() < MAIN_CARDS_SEPARATOR_VALUE }
 
-    LazyColumn {
-        item {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
-            ) {
-                AppCard {
-                    firstCardCountOptions.map {
-                        MainScreenCalculatorItemRow(
-                            countOption = it,
-                            onValueChange = { amount -> onAmountInputChange(it, amount) }
-                        )
-                    }
-                }
-                AppCard {
-                    secondCardCountOptions.map {
-                        MainScreenCalculatorItemRow(
-                            countOption = it,
-                            onValueChange = { amount -> onAmountInputChange(it, amount) }
-                        )
-                    }
-                }
+
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
+    ) {
+        AppCard {
+            firstCardCountOptions.map {
+                MainScreenCalculatorItemRow(
+                    countOption = it,
+                    onValueChange = { amount -> onAmountInputChange(it, amount) }
+                )
+            }
+        }
+        AppCard {
+            secondCardCountOptions.map {
+                MainScreenCalculatorItemRow(
+                    countOption = it,
+                    onValueChange = { amount -> onAmountInputChange(it, amount) }
+                )
             }
         }
     }
