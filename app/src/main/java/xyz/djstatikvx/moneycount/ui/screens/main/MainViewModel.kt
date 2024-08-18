@@ -3,6 +3,7 @@ package xyz.djstatikvx.moneycount.ui.screens.main
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import xyz.djstatikvx.moneycount.domain.model.CountOptionValue
 import xyz.djstatikvx.moneycount.domain.usecase.GetSelectedCountOptionsUseCase
-import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +22,12 @@ class MainViewModel @Inject constructor(
 
     suspend fun getSelectedCountOptions() {
         val selectedCountOptions = withContext(Dispatchers.IO) { getSelectedCountOptionsUseCase() }
-        _uiState.update { it.copy(countOptions = selectedCountOptions) }
+        _uiState.update {
+            it.copy(
+                countOptions = selectedCountOptions,
+                isLoading = false
+            )
+        }
     }
 
     fun updateCountOptionAmount(value: CountOptionValue, newAmount: String) {

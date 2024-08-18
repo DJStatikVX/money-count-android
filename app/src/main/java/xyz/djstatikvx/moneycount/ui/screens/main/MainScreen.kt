@@ -22,16 +22,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import xyz.djstatikvx.moneycount.R
 import xyz.djstatikvx.moneycount.domain.model.CountOption
 import xyz.djstatikvx.moneycount.extensions.toMoneyFormat
 import xyz.djstatikvx.moneycount.ui.components.AppCard
+import xyz.djstatikvx.moneycount.ui.components.AppLoading
 import xyz.djstatikvx.moneycount.ui.components.AppText
 import xyz.djstatikvx.moneycount.ui.components.AppTextField
 import xyz.djstatikvx.moneycount.ui.screens.main.MainScreen.Companion.MAIN_CARDS_SEPARATOR_VALUE
@@ -92,13 +95,22 @@ private fun MainScreenContent(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
     val totalSum = uiState.countOptions.fold(BigDecimal.ZERO) { acc, countOption ->
         acc.add(countOption.multiplier.value.multiply(BigDecimal(countOption.amount)))
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.getSelectedCountOptions()
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            viewModel.getSelectedCountOptions()
+        }
+    }
+
+    if (uiState.isLoading) {
+        AppLoading()
+        return
     }
 
     Column(
