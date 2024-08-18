@@ -156,27 +156,26 @@ private fun MainScreenCalculatorContainer(
     val secondCardCountOptions =
         countOptions.filter { it.multiplier.value.toInt() < MAIN_CARDS_SEPARATOR_VALUE }
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards)),
-    ) {
+    LazyColumn {
         item {
-            AppCard {
-                firstCardCountOptions.map {
-                    MainScreenCalculatorItemRow(
-                        countOption = it,
-                        onValueChange = { amount -> onAmountInputChange(it, amount) }
-                    )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.space_between_cards))
+            ) {
+                AppCard {
+                    firstCardCountOptions.map {
+                        MainScreenCalculatorItemRow(
+                            countOption = it,
+                            onValueChange = { amount -> onAmountInputChange(it, amount) }
+                        )
+                    }
                 }
-            }
-        }
-
-        item {
-            AppCard {
-                secondCardCountOptions.map {
-                    MainScreenCalculatorItemRow(
-                        countOption = it,
-                        onValueChange = { amount -> onAmountInputChange(it, amount) }
-                    )
+                AppCard {
+                    secondCardCountOptions.map {
+                        MainScreenCalculatorItemRow(
+                            countOption = it,
+                            onValueChange = { amount -> onAmountInputChange(it, amount) }
+                        )
+                    }
                 }
             }
         }
