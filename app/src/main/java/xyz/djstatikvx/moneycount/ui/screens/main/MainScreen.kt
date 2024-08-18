@@ -19,6 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -149,7 +152,7 @@ private fun MainScreenTotalSumContainer(
 @Composable
 private fun MainScreenCalculatorContainer(
     countOptions: List<CountOption>,
-    onAmountInputChange: (CountOption, Int) -> Unit
+    onAmountInputChange: (CountOption, String) -> Unit
 ) {
     val firstCardCountOptions =
         countOptions.filter { it.multiplier.value.toInt() >= MAIN_CARDS_SEPARATOR_VALUE }
@@ -185,7 +188,7 @@ private fun MainScreenCalculatorContainer(
 @Composable
 private fun MainScreenCalculatorItemRow(
     countOption: CountOption,
-    onValueChange: (Int) -> Unit
+    onValueChange: (String) -> Unit
 ) {
     val totalSum = countOption.multiplier.value
         .multiply(BigDecimal(countOption.amount))
@@ -209,13 +212,9 @@ private fun MainScreenCalculatorItemRow(
             modifier = Modifier.weight(.1f)
         )
         AppTextField(
-            value = countOption.amount.toString(),
+            value = countOption.amountStr,
             modifier = Modifier.weight(.3f),
-            onValueChange = {
-                if (it.isNotEmpty()) {
-                    onValueChange(it.toInt())
-                }
-            }
+            onValueChange = { onValueChange(it) }
         )
         AppText(
             text = equalsSymbol,

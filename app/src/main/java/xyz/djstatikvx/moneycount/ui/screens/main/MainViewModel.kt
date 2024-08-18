@@ -25,9 +25,12 @@ class MainViewModel @Inject constructor(
         _uiState.update { it.copy(countOptions = selectedCountOptions) }
     }
 
-    fun updateCountOptionAmount(value: CountOptionValue, newAmount: Int) {
+    fun updateCountOptionAmount(value: CountOptionValue, newAmount: String) {
         val newCountOptions = uiState.value.countOptions.map {
-            val updatedItem = it.copy(amount = newAmount)
+            val updatedItem = it.copy(
+                amount = newAmount.toIntOrNull() ?: 0,
+                amountStr = newAmount
+            )
             if (it.multiplier == value) updatedItem else it
         }
         _uiState.update { it.copy(countOptions = newCountOptions) }
