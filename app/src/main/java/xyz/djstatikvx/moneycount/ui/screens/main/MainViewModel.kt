@@ -43,7 +43,10 @@ class MainViewModel @Inject constructor(
 
     fun clearTotalSum() {
         val newCountOptions = uiState.value.countOptions.map {
-            it.copy(amount = 0)
+            it.copy(
+                amount = 0,
+                amountStr = "0"
+            )
         }
         _uiState.update { it.copy(countOptions = newCountOptions) }
     }
