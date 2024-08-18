@@ -1,6 +1,7 @@
 package xyz.djstatikvx.moneycount.ui.components
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import xyz.djstatikvx.moneycount.R
+import xyz.djstatikvx.moneycount.ui.theme.Pink
 
 @Composable
 fun AppTextField(
@@ -35,7 +37,13 @@ fun AppTextField(
         ),
         colors = TextFieldDefaults.colors().copy(
             focusedTextColor = textColor,
-            unfocusedTextColor = textColor
+            unfocusedTextColor = textColor,
+            cursorColor = Pink,
+            focusedIndicatorColor = Pink,
+            textSelectionColors = TextSelectionColors(
+                handleColor = Pink,
+                backgroundColor = Pink
+            )
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType
