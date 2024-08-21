@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.MoneyCount" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.MoneyCount.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">@color/pink</item>
+        <item name="postSplashScreenTheme">@style/Theme.MoneyCount</item>
+    </style>
 </resources>

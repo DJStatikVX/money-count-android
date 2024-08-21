@@ -1,13 +1,14 @@
 package xyz.djstatikvx.moneycount.ui.screens.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import xyz.djstatikvx.moneycount.domain.model.CountOptionValue
 import xyz.djstatikvx.moneycount.domain.usecase.GetSelectedCountOptionsUseCase
@@ -20,7 +21,13 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    suspend fun getSelectedCountOptions() {
+    init {
+        viewModelScope.launch {
+            getSelectedCountOptions()
+        }
+    }
+
+    private suspend fun getSelectedCountOptions() {
         val selectedCountOptions = withContext(Dispatchers.IO) { getSelectedCountOptionsUseCase() }
         _uiState.update {
             it.copy(

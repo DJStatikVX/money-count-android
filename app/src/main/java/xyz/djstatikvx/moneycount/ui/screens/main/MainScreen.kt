@@ -96,22 +96,9 @@ private fun MainScreenContent(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
     val totalSum = uiState.countOptions.fold(BigDecimal.ZERO) { acc, countOption ->
         acc.add(countOption.multiplier.value.multiply(BigDecimal(countOption.amount)))
-    }
-
-    LaunchedEffect(lifecycleState) {
-        if (lifecycleState == Lifecycle.State.RESUMED) {
-            viewModel.getSelectedCountOptions()
-        }
-    }
-
-    if (uiState.isLoading) {
-        AppLoading()
-        return
     }
 
     Column(
