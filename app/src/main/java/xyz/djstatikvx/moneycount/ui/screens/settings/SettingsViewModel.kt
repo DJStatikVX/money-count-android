@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,8 +23,17 @@ class SettingsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
-    suspend fun getCountOptions() {
-        val countOptions = withContext(Dispatchers.IO) { getCountOptionsUseCase() }
+    init {
+        viewModelScope.launch {
+            getCountOptions()
+        }
+    }
+
+    private suspend fun getCountOptions() {
+        val countOptions = withContext(Dispatchers.IO) {
+            getCountOptionsUseCase()
+                .first()
+        }
         _uiState.update { it.copy(countOptions = countOptions) }
     }
 

@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import xyz.djstatikvx.moneycount.data.model.CountOptionEntity
-import xyz.djstatikvx.moneycount.domain.model.CountOption
 import xyz.djstatikvx.moneycount.domain.model.CountOptionValue
 import xyz.djstatikvx.moneycount.extensions.dataStore
 import javax.inject.Inject
@@ -26,10 +26,12 @@ class CountOptionRepository @Inject constructor(
             .map { value -> CountOptionEntity(value = value) }
     }
 
-    suspend fun getSelectedOptions(): List<CountOptionEntity> {
-        val preferences = dataStore.data.first()
-        val jsonString = preferences[KEY_SELECTED_OPTIONS] ?: return DEFAULT_OPTIONS
-        return Json.decodeFromString(jsonString)
+    fun getSelectedOptions(): Flow<List<CountOptionEntity>> {
+        return dataStore.data.map { preferences ->
+            val jsonString = preferences[KEY_SELECTED_OPTIONS]
+                ?: return@map DEFAULT_OPTIONS
+            Json.decodeFromString(jsonString)
+        }
     }
 
     suspend fun updateSelectedOptions(options: List<CountOptionEntity>) {

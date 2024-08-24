@@ -28,12 +28,16 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun getSelectedCountOptions() {
-        val selectedCountOptions = withContext(Dispatchers.IO) { getSelectedCountOptionsUseCase() }
-        _uiState.update {
-            it.copy(
-                countOptions = selectedCountOptions,
-                isLoading = false
-            )
+        withContext(Dispatchers.IO) {
+            getSelectedCountOptionsUseCase()
+                .collect { selectedCountOptions ->
+                    _uiState.update {
+                        it.copy(
+                            countOptions = selectedCountOptions,
+                            isLoading = false
+                        )
+                    }
+                }
         }
     }
 
