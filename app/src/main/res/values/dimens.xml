@@ -4,4 +4,5 @@
     <dimen name="title_size">20sp</dimen>
     <dimen name="text_size">18sp</dimen>
     <dimen name="space_between_cards">16dp</dimen>
+    <dimen name="space_between_items">8dp</dimen>
 </resources>
