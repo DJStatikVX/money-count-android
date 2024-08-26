@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -137,16 +140,17 @@ class SettingsScreen : Screen {
         onItemCheckedChange: (CountOption, Boolean) -> Unit
     ) {
         AppCard {
-            FlowRow(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(SETTINGS_MAX_ITEMS_PER_CARD_ROW),
                 horizontalArrangement = Arrangement.spacedBy(
                     dimensionResource(id = R.dimen.space_between_items)
                 ),
                 verticalArrangement = Arrangement.spacedBy(
                     dimensionResource(id = R.dimen.space_between_items)
                 ),
-                maxItemsInEachRow = SETTINGS_MAX_ITEMS_PER_CARD_ROW
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.card_padding))
             ) {
-                items.map {
+                items(items) {
                     AppCheckboxWithText(
                         checked = it.selected,
                         onCheckedChange = { newCheckedValue ->

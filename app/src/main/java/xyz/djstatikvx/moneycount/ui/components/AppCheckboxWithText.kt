@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.sp
 import xyz.djstatikvx.moneycount.R
 
 @Composable
@@ -28,6 +29,6 @@ fun AppCheckboxWithText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         AppCheckbox(checked = checked)
-        AppText(text)
+        AppText(text, fontSize = dimensionResource(id = R.dimen.checkbox_text_size).value.sp)
     }
 }
