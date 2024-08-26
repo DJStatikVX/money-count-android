@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import xyz.djstatikvx.moneycount.domain.model.CountOption
 import xyz.djstatikvx.moneycount.domain.usecase.GetCountOptionsUseCase
 import xyz.djstatikvx.moneycount.domain.usecase.UpdateSelectedCountOptionsUseCase
 import javax.inject.Inject
@@ -37,7 +38,13 @@ class SettingsViewModel @Inject constructor(
         _uiState.update { it.copy(countOptions = countOptions) }
     }
 
-    fun updateCountOptions() {
+    fun updateCountOptions(updatedItem: CountOption, newSelectedValue: Boolean) {
+        val newCountOptions = uiState.value.countOptions.map {
+            if (it.multiplier == updatedItem.multiplier) {
+                it.copy(selected = newSelectedValue)
+            } else it
+        }
+        _uiState.update { it.copy(countOptions = newCountOptions) }
         viewModelScope.launch(Dispatchers.IO) {
             updateSelectedCountOptionsUseCase(uiState.value.countOptions)
         }

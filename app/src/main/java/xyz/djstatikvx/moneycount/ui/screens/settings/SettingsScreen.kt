@@ -109,15 +109,21 @@ class SettingsScreen : Screen {
             ) {
                 SettingsCountOptionsCard(
                     items = firstCardCountOptions,
-                    onItemCheckedChange = {
-                        /* TODO */
+                    onItemCheckedChange = { updatedItem, newCheckedValue ->
+                        viewModel.updateCountOptions(
+                            updatedItem,
+                            newCheckedValue
+                        )
                     }
                 )
 
                 SettingsCountOptionsCard(
                     items = secondCardCountOptions,
-                    onItemCheckedChange = {
-                        /* TODO */
+                    onItemCheckedChange = { updatedItem, newCheckedValue ->
+                        viewModel.updateCountOptions(
+                            updatedItem,
+                            newCheckedValue
+                        )
                     }
                 )
             }
@@ -128,7 +134,7 @@ class SettingsScreen : Screen {
     @Composable
     private fun SettingsCountOptionsCard(
         items: List<CountOption>,
-        onItemCheckedChange: (CountOption) -> Unit
+        onItemCheckedChange: (CountOption, Boolean) -> Unit
     ) {
         AppCard {
             FlowRow(
@@ -143,7 +149,12 @@ class SettingsScreen : Screen {
                 items.map {
                     AppCheckboxWithText(
                         checked = it.selected,
-                        onCheckedChange = { /* TODO */ },
+                        onCheckedChange = { newCheckedValue ->
+                            onItemCheckedChange(
+                                it,
+                                newCheckedValue
+                            )
+                        },
                         text = it.multiplier.value.toMoneyFormat(
                             requireFractionDigits = false
                         )
