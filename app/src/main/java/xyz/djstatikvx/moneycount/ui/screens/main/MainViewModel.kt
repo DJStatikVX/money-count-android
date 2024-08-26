@@ -45,7 +45,9 @@ class MainViewModel @Inject constructor(
         val newCountOptions = uiState.value.countOptions.map {
             val updatedItem = it.copy(
                 amount = newAmount.toIntOrNull() ?: 0,
-                amountStr = newAmount
+                amountStr = if (it.amountStr == "0") {
+                    newAmount.replace("0", "")
+                } else newAmount
             )
             if (it.multiplier == value) updatedItem else it
         }
