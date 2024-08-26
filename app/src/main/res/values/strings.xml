@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MoneyCount</string>
-    <string name="main_toolbar_settings">Ajustes</string>
-    <string name="main_clear">Limpiar operaciones</string>
-    <string name="settings_toolbar_title">Ajustes</string>
-    <string name="back">Atrás</string>
+    <string name="main_toolbar_settings">Settings</string>
+    <string name="main_clear">Clear operations</string>
+    <string name="settings_toolbar_title">Settings</string>
+    <string name="back">Back</string>
 </resources>
