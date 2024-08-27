@@ -22,7 +22,7 @@ class CountOptionRepository @Inject constructor(
 
     companion object {
         private val KEY_SELECTED_OPTIONS = stringPreferencesKey("selectedOptions")
-        private val DEFAULT_OPTIONS = CountOptionValue.entries
+        val DEFAULT_OPTIONS = CountOptionValue.entries
             .map { value -> CountOptionEntity(value = value) }
     }
 
