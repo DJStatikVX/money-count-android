@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import xyz.djstatikvx.moneycount.data.model.toDomain
 import xyz.djstatikvx.moneycount.data.repository.CountOptionRepository
-import kotlin.math.exp
 
 class GetCountOptionsUseCaseTest {
 
