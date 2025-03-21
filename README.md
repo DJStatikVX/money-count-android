@@ -23,9 +23,9 @@ MoneyCount is a simple Android application designed to **easily calculate money 
 Here’s a preview of the app:
 
 <div style="display: flex; justify-content: center; gap: 10px;">
-  <img src="https://imgur.com/j1EE46x.png" alt="Mockup 1" style="width: 30%; min-width: 150px;" />
-  <img src="https://imgur.com/URTfWIo.png" alt="Mockup 2" style="width: 30%; min-width: 150px;" />
-  <img src="https://imgur.com/VxfM3b7.png" alt="Mockup 3" style="width: 30%; min-width: 150px;" />
+  <img src="https://imgur.com/lgpcS37.png" alt="Mockup 1" style="width: 30%; min-width: 150px;" />
+  <img src="https://imgur.com/LkT2Uqs.png" alt="Mockup 2" style="width: 30%; min-width: 150px;" />
+  <img src="https://imgur.com/px4U8MK.png" alt="Mockup 3" style="width: 30%; min-width: 150px;" />
 </div>
 
 ## 📲 Getting Started
