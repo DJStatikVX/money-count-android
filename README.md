@@ -32,7 +32,7 @@ Here’s a preview of the app:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/MoneyCount.git
+   git clone https://github.com/DJStatikVX/money-count-android.git
    ```
 2. **Open the project in Android Studio.**
 
