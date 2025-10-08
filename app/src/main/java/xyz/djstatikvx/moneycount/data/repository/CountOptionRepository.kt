@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import xyz.djstatikvx.moneycount.data.model.CountOptionEntity
 import xyz.djstatikvx.moneycount.domain.model.CountOptionValue
@@ -16,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CountOptionRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     private val dataStore = context.dataStore
 

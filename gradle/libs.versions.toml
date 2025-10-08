@@ -1,21 +1,21 @@
 [versions]
-agp = "8.9.0"
+agp = "8.13.0"
 coreSplashscreen = "1.0.1"
-datastorePreferences = "1.1.3"
-hiltAndroid = "2.52"
-hiltNavigationCompose = "1.2.0"
-kotlin = "2.1.10"
-coreKtx = "1.15.0"
+datastorePreferences = "1.1.7"
+hiltAndroid = "2.57.2"
+hiltNavigationCompose = "1.3.0"
+kotlin = "2.2.20"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
 kotlintestRunnerJunit5 = "3.4.2"
-kotlinxSerializationJson = "1.5.1"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.1"
-composeBom = "2025.03.00"
-mockk = "1.13.2"
-voyager = "1.1.0-beta02"
+kotlinxSerializationJson = "1.9.0"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.09.01"
+mockk = "1.14.6"
+voyager = "1.1.0-beta03"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +37,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 kotlintest-runner-junit5 = { module = "io.kotlintest:kotlintest-runner-junit5", version.ref = "kotlintestRunnerJunit5" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
@@ -47,4 +48,6 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+kapt = { id = "org.jetbrains.kotlin.kapt" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
