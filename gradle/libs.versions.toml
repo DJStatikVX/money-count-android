@@ -4,7 +4,7 @@ coreSplashscreen = "1.2.0"
 datastorePreferences = "1.2.1"
 hiltAndroid = "2.59.2"
 hiltNavigationCompose = "1.3.0"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -16,7 +16,7 @@ activityCompose = "1.13.0"
 composeBom = "2026.03.00"
 mockk = "1.14.9"
 voyager = "1.1.0-beta03"
-ksp = "2.3.4"
+ksp = "2.3.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
